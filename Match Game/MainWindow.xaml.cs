@@ -24,6 +24,7 @@ namespace Match_Game
         DispatcherTimer timer = new DispatcherTimer();
         int tenthsOfSecondsElapsed;
         int matchesFound;
+        int lastTimeElapsedText;
         public MainWindow()
         {
             InitializeComponent();
@@ -33,15 +34,17 @@ namespace Match_Game
             SetUpGame();
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        public void Timer_Tick(object sender, EventArgs e)
         {
             tenthsOfSecondsElapsed++;
-            timeTextBlock.Text = (tenthsOfSecondsElapsed / 10f).ToString("0.0s");
+            timeTextBlock.Text = "Time " + ( tenthsOfSecondsElapsed / 10f).ToString("0.0s");            
             if (matchesFound == 8)
             {
                 timer.Stop();
                 timeTextBlock.Text = timeTextBlock.Text + " - Play again?";
+                
             }
+            
         }
 
         private void SetUpGame()
@@ -64,7 +67,7 @@ namespace Match_Game
             foreach (TextBlock textBlock in mainGrid.Children.OfType<TextBlock>())
             {
                 //The statement
-                if (textBlock.Name != "timeTextBlock")
+                if ((textBlock.Name != "timeTextBlock") && (textBlock.Name != "lastTimeElapsed"))
                 {
                     textBlock.Visibility = Visibility.Visible;
                     int index = random.Next(animalEmoji.Count); //Pick random number between 0 and the number of emoji left in the list and call it index
@@ -75,7 +78,8 @@ namespace Match_Game
             }
             timer.Start();
             tenthsOfSecondsElapsed = 0;
-            matchesFound = 0;
+            lastTimeElapsed.Text = timeTextBlock.Text;
+            matchesFound = 0;            
            
         }
 
